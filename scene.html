@@ -5,37 +5,54 @@
 		<title>My first three.js app</title>
 		<style>
 			body { margin: 0; }
+			canvas { width: 100%; height:100% }
 		</style>
 	</head>
 	<body>
 		<script src="js/three.js"></script>
 		<script>
+			// following are JavaScript
 			// creating the scene
-			const scene = new THREE.Scene();
-            const camera = new THREE.PerspectiveCamera( 75, window.innerWidth / window.innerHeight, 0.1, 1000 );
+			import* as THREE from 'three';
+			import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
+			let camera, scene, renderer, cube;
 
-            const renderer = new THREE.WebGLRenderer();
-            renderer.setSize( window.innerWidth, window.innerHeight );
-            document.body.appendChild( renderer.domElement );
+			function init(){
+				scene = new THREE.Scene();
+            	camera = new THREE.PerspectiveCamera( 75, window.innerWidth / window.innerHeight, 0.1, 1000 );
 
-			// creating the cube
-            const geometry = new THREE.BoxGeometry();
-            const material = new THREE.MeshBasicMaterial( { color: 0x00ff00 } );
-            const cube = new THREE.Mesh( geometry, material );
-            scene.add( cube );
+        		renderer = new THREE.WebGLRenderer();
+            	renderer.setSize( window.innerWidth, window.innerHeight );
+				document.body.appendChild( renderer.domElement );
 
-            camera.position.z = 5;
+				// creating the cube
+				geometry = new THREE.BoxGeometry();
+				material = new THREE.MeshBasicMaterial( { color: 0x00ff00 } );
+				cube = new THREE.Mesh( geometry, material );
+				scene.add( cube );
 
-			// rendering the scene
-			const animate = function () {
+				camera.position.z = 5;
+			}
+
+			function animate(){
+				
+				// rendering the scene
 				requestAnimationFrame( animate );
-
 				cube.rotation.x += 0.01;
 				cube.rotation.y += 0.01;
 
 				renderer.render( scene, camera );
-			};
 
+			}
+			function onWindowResize(){
+				camera.aspect = window.innerWidth / window.innerHeight;
+				camera.updateProjectionMatrix();
+				renderer.setSize( window.innerWidth, window.innerHeight );
+			}
+
+			window.addEventListener('resize', onWindowResize, false);
+
+			init();
 			animate();
 			
 		</script>
